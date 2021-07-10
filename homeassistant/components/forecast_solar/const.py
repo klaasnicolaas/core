@@ -86,4 +86,19 @@ SENSORS: list[ForecastSolarSensor] = [
         device_class=DEVICE_CLASS_ENERGY,
         unit_of_measurement=ENERGY_KILO_WATT_HOUR,
     ),
+    ForecastSolarSensor(
+        key="rate_limit",
+        name="Account - Rate limit",
+        entity_registry_enabled_default=False,
+    ),
+    ForecastSolarSensor(
+        key="rate_limit_remaining",
+        name="Account - Remaining API calls",
+        entity_registry_enabled_default=False,
+    ),
+    ForecastSolarSensor(
+        key="account_type",
+        name="Account - Type",
+        entity_registry_enabled_default=False,
+    ),
 ]
