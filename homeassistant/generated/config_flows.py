@@ -224,6 +224,7 @@ FLOWS = [
     "nws",
     "nzbget",
     "octoprint",
+    "omnik_inverter",
     "omnilogic",
     "oncue",
     "ondilo_ico",
