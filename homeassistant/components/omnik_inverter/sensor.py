@@ -51,6 +51,7 @@ SENSORS: dict[Literal["inverter"], tuple[SensorEntityDescription, ...]] = {
             name="Solar Production - Today",
             native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
             device_class=DEVICE_CLASS_ENERGY,
+            state_class=STATE_CLASS_TOTAL_INCREASING,
         ),
         SensorEntityDescription(
             key="solar_energy_total",
