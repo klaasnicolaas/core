@@ -39,21 +39,23 @@ from .const import (
 SENSORS: dict[Literal["inverter"], tuple[SensorEntityDescription, ...]] = {
     SERVICE_INVERTER: (
         SensorEntityDescription(
-            key="current_power",
-            name="Power Consumption",
+            key="solar_current_power",
+            name="Current Power Production",
+            icon="mdi:weather-sunny",
             native_unit_of_measurement=POWER_WATT,
             device_class=DEVICE_CLASS_POWER,
             state_class=STATE_CLASS_MEASUREMENT,
         ),
         SensorEntityDescription(
-            key="energy_today",
-            name="Energy Production - Today",
+            key="solar_energy_today",
+            name="Solar Production - Today",
             native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
             device_class=DEVICE_CLASS_ENERGY,
         ),
         SensorEntityDescription(
-            key="energy_total",
-            name="Energy Production - Total",
+            key="solar_energy_total",
+            name="Solar Production - Total",
+            icon="mdi:chart-line",
             native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
             device_class=DEVICE_CLASS_ENERGY,
             state_class=STATE_CLASS_TOTAL_INCREASING,
@@ -97,7 +99,7 @@ class OmnikInverterSensorEntity(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator=coordinator)
         self._service_key = service_key
 
-        self.entity_id = f"{SENSOR_DOMAIN}.{name}_{service_key}_{description.key}"
+        self.entity_id = f"{SENSOR_DOMAIN}.{name}_{description.key}"
         self.entity_description = description
         self._attr_unique_id = (
             f"{coordinator.config_entry.entry_id}_{service_key}_{description.key}"
