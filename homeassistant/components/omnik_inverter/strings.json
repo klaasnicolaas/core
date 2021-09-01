@@ -12,5 +12,15 @@
     "error": {
       "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]"
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Change the way the integration fetches your Omnik Inverter.",
+        "data": {
+          "use json": "Use JSON"
+        }
+      }
+    }
   }
 }

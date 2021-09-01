@@ -13,5 +13,15 @@
                 "description": "Set up Omnik Inverter to integrate with Home Assistant."
             }
         }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "use json": "Use JSON"
+                },
+                "description": "Change the way the integration fetches your Omnik Inverter."
+            }
+        }
     }
 }

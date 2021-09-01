@@ -13,7 +13,7 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN, LOGGER, SCAN_INTERVAL, SERVICE_INVERTER
+from .const import CONF_USE_JSON, DOMAIN, LOGGER, SCAN_INTERVAL, SERVICE_INVERTER
 
 PLATFORMS = (SENSOR_DOMAIN,)
 
@@ -32,6 +32,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    entry.async_on_unload(entry.add_update_listener(async_update_options))
     return True
 
 
@@ -43,6 +44,11 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await coordinator.omnikinverter.close()
 
     return unload_ok
+
+
+async def async_update_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Update options."""
+    await hass.config_entries.async_reload(entry.entry_id)
 
 
 class OmnikInverterData(TypedDict):
@@ -69,7 +75,9 @@ class OmnikInverterDataUpdateCoordinator(DataUpdateCoordinator[OmnikInverterData
         )
 
         self.omnikinverter = OmnikInverter(
-            self.config_entry.data[CONF_HOST], session=async_get_clientsession(hass)
+            host=self.config_entry.data[CONF_HOST],
+            session=async_get_clientsession(hass),
+            use_json=self.config_entry.options.get(CONF_USE_JSON, False),
         )
 
     async def _async_update_data(self) -> OmnikInverterData:
