@@ -113,7 +113,7 @@ class OmnikInverterSensorEntity(CoordinatorEntity, SensorEntity):
             ATTR_NAME: service,
             ATTR_MANUFACTURER: "Omnik",
             ATTR_MODEL: coordinator.data["inverter"].model,
-            ATTR_SW_VERSION: coordinator.data["inverter"].firmware,
+            ATTR_SW_VERSION: coordinator.data["inverter"].firmware_main,
             ATTR_ENTRY_TYPE: ENTRY_TYPE_SERVICE,
         }
 
