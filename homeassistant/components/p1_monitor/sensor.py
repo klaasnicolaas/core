@@ -15,7 +15,6 @@ from homeassistant.const import (
     ATTR_IDENTIFIERS,
     ATTR_MANUFACTURER,
     ATTR_NAME,
-    CURRENCY_EURO,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_GAS,
@@ -36,6 +35,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from . import P1MonitorDataUpdateCoordinator
 from .const import (
     ATTR_ENTRY_TYPE,
+    CURRENCY_EURO_KWH,
     DOMAIN,
     ENTRY_TYPE_SERVICE,
     SERVICE_PHASES,
@@ -196,31 +196,31 @@ SENSORS: dict[
             name="Gas Consumption Price",
             entity_registry_enabled_default=False,
             device_class=DEVICE_CLASS_MONETARY,
-            native_unit_of_measurement=CURRENCY_EURO,
+            native_unit_of_measurement="EUR",
         ),
         SensorEntityDescription(
             key="energy_consumption_price_low",
             name="Energy Consumption Price - Low",
             device_class=DEVICE_CLASS_MONETARY,
-            native_unit_of_measurement=CURRENCY_EURO,
+            native_unit_of_measurement=CURRENCY_EURO_KWH,
         ),
         SensorEntityDescription(
             key="energy_consumption_price_high",
             name="Energy Consumption Price - High",
             device_class=DEVICE_CLASS_MONETARY,
-            native_unit_of_measurement=CURRENCY_EURO,
+            native_unit_of_measurement=CURRENCY_EURO_KWH,
         ),
         SensorEntityDescription(
             key="energy_production_price_low",
             name="Energy Production Price - Low",
             device_class=DEVICE_CLASS_MONETARY,
-            native_unit_of_measurement=CURRENCY_EURO,
+            native_unit_of_measurement=CURRENCY_EURO_KWH,
         ),
         SensorEntityDescription(
             key="energy_production_price_high",
             name="Energy Production Price - High",
             device_class=DEVICE_CLASS_MONETARY,
-            native_unit_of_measurement=CURRENCY_EURO,
+            native_unit_of_measurement=CURRENCY_EURO_KWH,
         ),
     ),
 }

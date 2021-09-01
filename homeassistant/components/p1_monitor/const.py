@@ -12,6 +12,8 @@ SCAN_INTERVAL = timedelta(seconds=5)
 ATTR_ENTRY_TYPE: Final = "entry_type"
 ENTRY_TYPE_SERVICE: Final = "service"
 
+CURRENCY_EURO_KWH: Final = "EUR/kWh"
+
 SERVICE_SMARTMETER: Final = "smartmeter"
 SERVICE_PHASES: Final = "phases"
 SERVICE_SETTINGS: Final = "settings"
