@@ -39,7 +39,9 @@ class OmnikInverterFlowHandler(ConfigFlow, domain=DOMAIN):
             session = async_get_clientsession(self.hass)
             try:
                 async with OmnikInverter(
-                    host=user_input[CONF_HOST], session=session
+                    host=user_input[CONF_HOST],
+                    use_json=user_input[CONF_USE_JSON],
+                    session=session,
                 ) as client:
                     await client.inverter()
             except OmnikInverterError:
@@ -49,6 +51,9 @@ class OmnikInverterFlowHandler(ConfigFlow, domain=DOMAIN):
                     title=user_input[CONF_NAME],
                     data={
                         CONF_HOST: user_input[CONF_HOST],
+                    },
+                    options={
+                        CONF_USE_JSON: user_input[CONF_USE_JSON],
                     },
                 )
 
@@ -60,6 +65,7 @@ class OmnikInverterFlowHandler(ConfigFlow, domain=DOMAIN):
                         CONF_NAME, default=self.hass.config.location_name
                     ): str,
                     vol.Required(CONF_HOST): str,
+                    vol.Optional(CONF_USE_JSON, default=False): bool,
                 }
             ),
             errors=errors,
