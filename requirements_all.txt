@@ -1143,7 +1143,7 @@ objgraph==3.4.1
 oemthermostat==1.1.1
 
 # homeassistant.components.omnik_inverter
-omnikinverter==0.3.1
+omnikinverter==0.4.0
 
 # homeassistant.components.omnilogic
 omnilogic==0.4.5
