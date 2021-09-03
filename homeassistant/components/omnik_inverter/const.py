@@ -15,7 +15,9 @@ ATTR_ENTRY_TYPE: Final = "entry_type"
 ENTRY_TYPE_SERVICE: Final = "service"
 
 SERVICE_INVERTER: Final = "inverter"
+SERVICE_DEVICE: Final = "device"
 
 SERVICES: dict[str, str] = {
     SERVICE_INVERTER: "Inverter",
+    SERVICE_DEVICE: "Device",
 }

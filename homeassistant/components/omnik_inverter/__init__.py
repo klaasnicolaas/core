@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import TypedDict
 
-from omnikinverter import Inverter, OmnikInverter
+from omnikinverter import Device, Inverter, OmnikInverter
 
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.config_entries import ConfigEntry
@@ -13,7 +13,14 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import CONF_USE_JSON, DOMAIN, LOGGER, SCAN_INTERVAL, SERVICE_INVERTER
+from .const import (
+    CONF_USE_JSON,
+    DOMAIN,
+    LOGGER,
+    SCAN_INTERVAL,
+    SERVICE_DEVICE,
+    SERVICE_INVERTER,
+)
 
 PLATFORMS = (SENSOR_DOMAIN,)
 
@@ -55,6 +62,7 @@ class OmnikInverterData(TypedDict):
     """Class for defining data in dict."""
 
     inverter: Inverter
+    device: Device
 
 
 class OmnikInverterDataUpdateCoordinator(DataUpdateCoordinator[OmnikInverterData]):
@@ -84,6 +92,7 @@ class OmnikInverterDataUpdateCoordinator(DataUpdateCoordinator[OmnikInverterData
         """Fetch data from Omnik Inverter."""
         data: OmnikInverterData = {
             SERVICE_INVERTER: await self.omnikinverter.inverter(),
+            SERVICE_DEVICE: await self.omnikinverter.device(),
         }
 
         return data

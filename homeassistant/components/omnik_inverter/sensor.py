@@ -20,6 +20,7 @@ from homeassistant.const import (
     DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_POWER,
     ENERGY_KILO_WATT_HOUR,
+    PERCENTAGE,
     POWER_WATT,
 )
 from homeassistant.core import HomeAssistant
@@ -32,11 +33,12 @@ from .const import (
     ATTR_ENTRY_TYPE,
     DOMAIN,
     ENTRY_TYPE_SERVICE,
+    SERVICE_DEVICE,
     SERVICE_INVERTER,
     SERVICES,
 )
 
-SENSORS: dict[Literal["inverter"], tuple[SensorEntityDescription, ...]] = {
+SENSORS: dict[Literal["inverter", "device"], tuple[SensorEntityDescription, ...]] = {
     SERVICE_INVERTER: (
         SensorEntityDescription(
             key="solar_current_power",
@@ -60,6 +62,19 @@ SENSORS: dict[Literal["inverter"], tuple[SensorEntityDescription, ...]] = {
             native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
             device_class=DEVICE_CLASS_ENERGY,
             state_class=STATE_CLASS_TOTAL_INCREASING,
+        ),
+    ),
+    SERVICE_DEVICE: (
+        SensorEntityDescription(
+            key="signal_quality",
+            name="Signal Quality",
+            icon="mdi:wifi",
+            native_unit_of_measurement=PERCENTAGE,
+        ),
+        SensorEntityDescription(
+            key="ip_address",
+            name="IP Address",
+            icon="mdi:network",
         ),
     ),
 }
@@ -92,7 +107,7 @@ class OmnikInverterSensorEntity(CoordinatorEntity, SensorEntity):
         *,
         coordinator: OmnikInverterDataUpdateCoordinator,
         description: SensorEntityDescription,
-        service_key: Literal["inverter"],
+        service_key: Literal["inverter", "device"],
         name: str,
         service: str,
     ) -> None:
@@ -113,7 +128,7 @@ class OmnikInverterSensorEntity(CoordinatorEntity, SensorEntity):
             ATTR_NAME: service,
             ATTR_MANUFACTURER: "Omnik",
             ATTR_MODEL: coordinator.data["inverter"].model,
-            ATTR_SW_VERSION: coordinator.data["inverter"].firmware_main,
+            ATTR_SW_VERSION: coordinator.data[service_key].firmware,
             ATTR_ENTRY_TYPE: ENTRY_TYPE_SERVICE,
         }
 
