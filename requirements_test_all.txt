@@ -716,7 +716,7 @@ oauth2client==4.1.3
 objgraph==3.4.1
 
 # homeassistant.components.omnik_inverter
-omnikinverter==0.4.0
+omnikinverter==0.5.0
 
 # homeassistant.components.omnilogic
 omnilogic==0.4.5
