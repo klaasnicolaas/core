@@ -5,18 +5,19 @@ from datetime import timedelta
 from typing import TypedDict
 
 from omnikinverter import Device, Inverter, OmnikInverter
+from omnikinverter.exceptions import OmnikInverterError
 
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_HOST
+from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
     CONF_SCAN_INTERVAL,
-    CONF_USE_JSON,
+    CONF_SOURCE_TYPE,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
     LOGGER,
@@ -88,17 +89,27 @@ class OmnikInverterDataUpdateCoordinator(DataUpdateCoordinator[OmnikInverterData
             update_interval=scan_interval,
         )
 
+        if self.config_entry.data[CONF_SOURCE_TYPE] == "html":
+            self.omnikinverter = OmnikInverter(
+                host=self.config_entry.data[CONF_HOST],
+                source_type=self.config_entry.data[CONF_SOURCE_TYPE],
+                username=self.config_entry.data[CONF_USERNAME],
+                password=self.config_entry.data[CONF_PASSWORD],
+                session=async_get_clientsession(hass),
+            )
         self.omnikinverter = OmnikInverter(
             host=self.config_entry.data[CONF_HOST],
+            source_type=self.config_entry.data[CONF_SOURCE_TYPE],
             session=async_get_clientsession(hass),
-            use_json=self.config_entry.options.get(CONF_USE_JSON, False),
         )
 
     async def _async_update_data(self) -> OmnikInverterData:
         """Fetch data from Omnik Inverter."""
-        data: OmnikInverterData = {
-            SERVICE_INVERTER: await self.omnikinverter.inverter(),
-            SERVICE_DEVICE: await self.omnikinverter.device(),
-        }
-
-        return data
+        try:
+            data: OmnikInverterData = {
+                SERVICE_INVERTER: await self.omnikinverter.inverter(),
+                SERVICE_DEVICE: await self.omnikinverter.device(),
+            }
+            return data
+        except OmnikInverterError as err:
+            raise UpdateFailed(err) from err
