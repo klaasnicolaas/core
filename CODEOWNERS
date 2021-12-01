@@ -655,7 +655,7 @@ homeassistant/components/octoprint/* @rfleming71
 tests/components/octoprint/* @rfleming71
 homeassistant/components/ohmconnect/* @robbiet480
 homeassistant/components/ombi/* @larssont
-homeassistant/components/omnik_inverter/* @klaasnicolaas
+homeassistant/components/omnik_inverter/* @robbinjanssen @klaasnicolaas
 homeassistant/components/omnilogic/* @oliver84 @djtimca @gentoosu
 tests/components/omnilogic/* @oliver84 @djtimca @gentoosu
 homeassistant/components/onboarding/* @home-assistant/core
