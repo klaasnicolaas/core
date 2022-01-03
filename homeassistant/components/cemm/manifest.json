@@ -5,5 +5,11 @@
   "documentation": "https://www.home-assistant.io/integrations/cemm",
   "requirements": ["cemm==0.3.1"],
   "codeowners": ["@klaasnicolaas"],
-  "iot_class": "local_polling"
+  "iot_class": "local_polling",
+  "zeroconf": [
+    {
+      "type": "_http._tcp.local.",
+      "name": "cemm*"
+    }
+  ]
 }

@@ -190,6 +190,10 @@ ZEROCONF = {
             "name": "bosch shc*",
         },
         {
+            "domain": "cemm",
+            "name": "cemm*"
+        },
+        {
             "domain": "nam",
             "name": "nam-*",
         },
