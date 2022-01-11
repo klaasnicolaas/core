@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import TypedDict
 
-from cemm import CEMM, Device, SmartMeter
+from cemm import CEMM, Device
 
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.config_entries import ConfigEntry
@@ -13,7 +13,7 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN, LOGGER, SCAN_INTERVAL, SERVICE_DEVICE, SERVICE_SMARTMETER
+from .const import DOMAIN, LOGGER, SCAN_INTERVAL, SERVICE_DEVICE
 
 PLATFORMS = (SENSOR_DOMAIN,)
 
@@ -48,7 +48,6 @@ class CEMMData(TypedDict):
     """Class for defining data in dict."""
 
     device: Device
-    smartmeter: SmartMeter
 
 
 class CEMMDataUpdateCoordinator(DataUpdateCoordinator[CEMMData]):
@@ -76,7 +75,6 @@ class CEMMDataUpdateCoordinator(DataUpdateCoordinator[CEMMData]):
         """Fetch data from CEMM."""
         data: CEMMData = {
             SERVICE_DEVICE: await self.cemm.device(),
-            SERVICE_SMARTMETER: await self.cemm.smartmeter(),
         }
 
         return data
