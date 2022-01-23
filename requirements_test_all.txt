@@ -684,6 +684,9 @@ ndms2_client==0.1.1
 # homeassistant.components.ness_alarm
 nessclient==0.9.15
 
+# homeassistant.components.net2grid
+net2grid==2.0.0
+
 # homeassistant.components.discovery
 netdisco==3.0.0
 

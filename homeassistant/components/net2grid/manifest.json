@@ -1,0 +1,18 @@
+{
+  "domain": "net2grid",
+  "name": "Net2Grid",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/net2grid",
+  "requirements": ["net2grid==2.0.0"],
+  "codeowners": ["@klaasnicolaas"],
+  "quality_scale": "platinum",
+  "iot_class": "local_polling",
+  "zeroconf": [
+    {
+      "type": "_http._tcp.local.",
+      "properties": {
+        "macaddress": "84df0c*"
+      }
+    }
+  ]
+}

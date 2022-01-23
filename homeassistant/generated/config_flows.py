@@ -212,6 +212,7 @@ FLOWS = [
     "nanoleaf",
     "neato",
     "nest",
+    "net2grid",
     "netatmo",
     "netgear",
     "nexia",

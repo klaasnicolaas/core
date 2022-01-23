@@ -611,6 +611,8 @@ homeassistant/components/ness_alarm/* @nickw444
 tests/components/ness_alarm/* @nickw444
 homeassistant/components/nest/* @allenporter
 tests/components/nest/* @allenporter
+homeassistant/components/net2grid/* @klaasnicolaas
+tests/components/net2grid/* @klaasnicolaas
 homeassistant/components/netatmo/* @cgtobi
 tests/components/netatmo/* @cgtobi
 homeassistant/components/netdata/* @fabaff
