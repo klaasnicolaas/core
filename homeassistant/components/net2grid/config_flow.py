@@ -65,7 +65,6 @@ class Net2GridFlowHandler(ConfigFlow, domain=DOMAIN):
         self, discovery_info: zeroconf.ZeroconfServiceInfo
     ) -> FlowResult:
         """Handle zeroconf discovery."""
-
         self.discovered_host = discovery_info.host
         try:
             self.discovered_device = await self._async_get_device(discovery_info.host)
@@ -96,7 +95,14 @@ class Net2GridFlowHandler(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="zeroconf_confirm",
-            description_placeholders={"name": "Net2Grid SmartBridge"},
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        CONF_NAME, default=self.hass.config.location_name
+                    ): str,
+                }
+            ),
+            description_placeholders={"name": "Net2Grid"},
         )
 
     async def _async_get_device(self, host: str) -> Device:
