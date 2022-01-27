@@ -1,5 +1,4 @@
 """Tests for the sensors provided by the Net2Grid integration."""
-from unittest.mock import MagicMock, patch
 
 from homeassistant.components.net2grid.const import DOMAIN
 from homeassistant.components.sensor import (
@@ -23,8 +22,7 @@ from tests.common import MockConfigEntry
 
 async def test_sensors(
     hass: HomeAssistant,
-    mock_config_entry: MockConfigEntry,
-    mock_net2grid: MagicMock,
+    init_integration: MockConfigEntry,
 ) -> None:
     """Test the Net2Grid - SmartBridge sensors."""
     entry_id = init_integration.entry_id

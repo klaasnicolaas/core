@@ -1,9 +1,9 @@
 """Fixtures for Net2Grid integration tests."""
 from collections.abc import Generator
 import json
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from net2grid import Device as Net2GridDevice
+from net2grid import Device as Net2GridDevice, SmartBridge
 import pytest
 
 from homeassistant.components.net2grid.const import DOMAIN
@@ -25,6 +25,15 @@ def mock_config_entry() -> MockConfigEntry:
 
 
 @pytest.fixture
+def mock_setup_entry() -> Generator[None, None, None]:
+    """Mock setting up a config entry."""
+    with patch(
+        "homeassistant.components.net2grid.async_setup_entry", return_value=True
+    ):
+        yield
+
+
+@pytest.fixture
 def mock_net2grid_config_flow(
     request: pytest.FixtureRequest,
 ) -> Generator[None, MagicMock, None]:
@@ -33,35 +42,35 @@ def mock_net2grid_config_flow(
         "homeassistant.components.net2grid.config_flow.Net2Grid", autospec=True
     ) as net2grid_mock:
         net2grid = net2grid_mock.return_value
-        net2grid.device.return_value = Net2GridDevice(
-            json.loads(load_fixture("net2grid/device.json"))
+        net2grid.device.return_value = Net2GridDevice.from_dict(
+            json.loads(load_fixture("device.json", DOMAIN))
         )
         yield net2grid
 
 
 @pytest.fixture
-def mock_net2grid(request: pytest.FixtureRequest) -> Generator[None, MagicMock, None]:
+def mock_net2grid():
     """Return a mocked Net2Grid client."""
-    fixture: str = "net2grid/device.json"
-    if hasattr(request, "param") and request.param:
-        fixture = request.param
-
-    device = Net2GridDevice(json.loads(load_fixture(fixture)))
     with patch(
         "homeassistant.components.net2grid.Net2Grid", autospec=True
     ) as net2grid_mock:
         net2grid = net2grid_mock.return_value
-        net2grid.device.return_value = device
-        net2grid.connected = False
-        net2grid.host = "127.0.0.1"
-        yield net2grid
+        net2grid.smartbridge = AsyncMock(
+            return_value=SmartBridge.from_dict(
+                json.loads(load_fixture("net2grid/smartbridge.json"))
+            )
+        )
+        net2grid.device = AsyncMock(
+            return_value=Net2GridDevice.from_dict(
+                json.loads(load_fixture("net2grid/device.json"))
+            )
+        )
+        yield net2grid_mock
 
 
 @pytest.fixture
 async def init_integration(
-    hass: HomeAssistant,
-    mock_config_entry: MockConfigEntry,
-    mock_net2grid: MagicMock,
+    hass: HomeAssistant, mock_config_entry: MockConfigEntry, mock_net2grid: MagicMock
 ) -> MockConfigEntry:
     """Set up the Net2Grid integration for testing."""
     mock_config_entry.add_to_hass(hass)

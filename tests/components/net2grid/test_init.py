@@ -1,5 +1,4 @@
 """Tests for the Net2Grid integration."""
-import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from net2grid import Net2GridConnectionError
@@ -18,33 +17,19 @@ async def test_load_unload_config_entry(
     mock_config_entry: MockConfigEntry,
     mock_net2grid: AsyncMock,
 ) -> None:
-    """Test the Net2Grid configuration entry unloading."""
-    connection_connected = asyncio.Future()
-    connection_finished = asyncio.Future()
-
-    async def connect(callback: Callable):
-        connection_connected.set_result(None)
-        await connection_finished
-
-    # Mock out net2grid.listen with a Future
-    mock_net2grid.listen.side_effect = connect
-
+    """Test the Net2Grid configuration entry loading/unloading."""
     mock_config_entry.add_to_hass(hass)
     await hass.config_entries.async_setup(mock_config_entry.entry_id)
     await hass.async_block_till_done()
-    await connection_connected
 
-    # Ensure config entry is loaded and are connected
     assert mock_config_entry.state is ConfigEntryState.LOADED
-    assert mock_net2grid.connect.call_count == 1
-    assert mock_net2grid.disconnect.call_count == 0
+    assert len(mock_net2grid.mock_calls) == 3
 
     await hass.config_entries.async_unload(mock_config_entry.entry_id)
     await hass.async_block_till_done()
 
-    # Ensure everything is cleaned up nicely and are disconnected
-    assert mock_net2grid.disconnect.call_count == 1
     assert not hass.data.get(DOMAIN)
+    assert mock_config_entry.state is ConfigEntryState.NOT_LOADED
 
 
 @patch(
@@ -61,7 +46,6 @@ async def test_config_entry_not_ready(
     await hass.config_entries.async_setup(mock_config_entry.entry_id)
     await hass.async_block_till_done()
 
-    assert mock_request.call_count == 1
     assert mock_config_entry.state is ConfigEntryState.SETUP_RETRY
 
 
