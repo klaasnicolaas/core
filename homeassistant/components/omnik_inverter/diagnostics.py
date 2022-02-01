@@ -6,13 +6,13 @@ from typing import Any
 
 from homeassistant.components.diagnostics import async_redact_data
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_HOST
+from homeassistant.const import CONF_HOST, CONF_IP_ADDRESS
 from homeassistant.core import HomeAssistant
 
 from . import OmnikInverterDataUpdateCoordinator
 from .const import DOMAIN, SERVICE_DEVICE, SERVICE_INVERTER
 
-TO_REDACT = {CONF_HOST}
+TO_REDACT = {CONF_HOST, CONF_IP_ADDRESS}
 
 
 async def async_get_config_entry_diagnostics(
