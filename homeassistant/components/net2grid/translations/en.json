@@ -1,9 +1,13 @@
 {
     "config": {
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "unknown": "Unexpected error"
+        "abort": {
+            "already_configured": "Device is already configured",
+            "cannot_connect": "Failed to connect"
         },
+        "error": {
+            "cannot_connect": "Failed to connect"
+        },
+        "flow_title": "{name} ({host})",
         "step": {
             "user": {
                 "data": {
@@ -11,6 +15,10 @@
                     "name": "Name"
                 },
                 "description": "Set up NET2GRID SmartBridge to integrate with Home Assistant."
+            },
+            "zeroconf_confirm": {
+                "description": "Do you want to add NET2GRID (`{model}`) to Home Assistant?",
+                "title": "Discovered NET2GRID device"
             }
         }
     }
