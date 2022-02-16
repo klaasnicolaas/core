@@ -177,9 +177,7 @@ ZEROCONF = {
         },
         {
             "domain": "net2grid",
-            "properties": {
-                "macaddress": "84df0c*"
-            }
+            "name": "smartbridge*"
         },
         {
             "domain": "rachio",

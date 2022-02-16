@@ -1079,7 +1079,7 @@ ndms2_client==0.1.1
 nessclient==0.9.15
 
 # homeassistant.components.net2grid
-net2grid==2.0.0
+net2grid==3.0.0
 
 # homeassistant.components.netdata
 netdata==1.0.1
