@@ -1,6 +1,6 @@
 {
   "config": {
-    "flow_title": "{name} ({host})",
+    "flow_title": "{model} ({host})",
     "step": {
       "user": {
         "description": "Set up NET2GRID SmartBridge to integrate with Home Assistant.",
@@ -10,7 +10,7 @@
         }
       },
       "zeroconf_confirm": {
-        "description": "Do you want to add NET2GRID (`{model}`) to Home Assistant?",
+        "description": "Do you want to add NET2GRID SmartBridge (`{model}`) to Home Assistant?",
         "title": "Discovered NET2GRID device"
       }
     },

@@ -77,9 +77,9 @@ class Net2GridFlowHandler(ConfigFlow, domain=DOMAIN):
         self.context.update(
             {
                 "title_placeholders": {
+                    CONF_NAME: "Net2Grid",
                     CONF_HOST: self.discovered_host,
                     "model": self.discovered_device.model,
-                    CONF_NAME: self.discovered_device.manufacturer,
                 },
             }
         )
@@ -106,7 +106,10 @@ class Net2GridFlowHandler(ConfigFlow, domain=DOMAIN):
                     ): str,
                 }
             ),
-            description_placeholders={CONF_NAME: "Net2Grid"},
+            description_placeholders={
+                CONF_NAME: "Net2Grid",
+                "model": self.discovered_device.model,
+            },
         )
 
     async def _async_get_device(self, host: str) -> Device:
