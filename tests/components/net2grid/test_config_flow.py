@@ -49,6 +49,7 @@ async def test_full_zeroconf_flow_implementationn(
         context={"source": SOURCE_ZEROCONF},
         data=zeroconf.ZeroconfServiceInfo(
             host="192.168.1.123",
+            addresses=["192.168.1.123"],
             hostname="example.local.",
             name="mock_name",
             port=None,
@@ -102,6 +103,7 @@ async def test_zeroconf_connection_error(
         context={"source": SOURCE_ZEROCONF},
         data=zeroconf.ZeroconfServiceInfo(
             host="192.168.1.123",
+            addresses=["192.168.1.123"],
             hostname="example.local.",
             name="mock_name",
             port=None,
