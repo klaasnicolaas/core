@@ -382,7 +382,7 @@ buienradar==1.0.5
 caldav==0.9.1
 
 # homeassistant.components.cemm
-cemm==0.3.1
+cemm==0.4.0
 
 # homeassistant.components.co2signal
 co2signal==0.4.2
