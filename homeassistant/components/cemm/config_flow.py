@@ -34,9 +34,8 @@ class CEMMFlowHandler(ConfigFlow, domain=DOMAIN):
             session = async_get_clientsession(self.hass)
             try:
                 async with CEMM(host=user_input[CONF_HOST], session=session) as client:
-                    await client.all_connections()
-                    # for item in connections:
-                    #     self.connections.append(item)
+                    connection_mapping = await client.all_connections()
+                    print(connection_mapping)
             except CEMMConnectionError:
                 errors["base"] = "cannot_connect"
             else:
@@ -47,6 +46,8 @@ class CEMMFlowHandler(ConfigFlow, domain=DOMAIN):
                         CONF_CONNECTIONS: self.connections,
                     },
                 )
+
+            return await self.async_step_select()
 
         return self.async_show_form(
             step_id="user",
@@ -59,4 +60,17 @@ class CEMMFlowHandler(ConfigFlow, domain=DOMAIN):
                 }
             ),
             errors=errors,
+        )
+
+    async def async_step_select(self, user_input=None):
+        """Handle multiple CEMM connections."""
+
+        errors = {}
+
+        select_schema = vol.Schema(
+            {vol.Required("select_connection"): vol.In(list(self.connections))}
+        )
+
+        return self.async_show_form(
+            step_id="select", data_schema=select_schema, errors=errors
         )
