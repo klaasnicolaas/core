@@ -305,7 +305,13 @@ asyncsleepiq==1.2.3
 auroranoaa==0.0.2
 
 # homeassistant.components.aurora_abb_powerone
-aurorapy==0.2.7
+aurorapy==0.2.6
+
+# homeassistant.components.autarco
+autarco==0.2.0
+
+# homeassistant.components.stream
+av==8.1.0
 
 # homeassistant.components.axis
 axis==44
