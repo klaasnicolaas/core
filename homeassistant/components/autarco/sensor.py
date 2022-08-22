@@ -11,25 +11,22 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    ENERGY_KILO_WATT_HOUR,
-    POWER_WATT,
-)
+from homeassistant.const import ENERGY_KILO_WATT_HOUR, POWER_WATT
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .coordinator import AutarcoData, AutarcoDataUpdateCoordinator
 from .const import DOMAIN
+from .coordinator import AutarcoDataUpdateCoordinator
 
 
 @dataclass
 class AutarcoSensorEntityDescriptionMixin:
     """Mixin for required keys."""
 
-    value_fn: Callable[[AutarcoData], float | int | str]
+    value_fn: Callable
 
 
 @dataclass
@@ -50,18 +47,23 @@ SENSORS_ACCOUNT: tuple[AutarcoSensorEntityDescription, ...] = (
         name="City",
         value_fn=lambda data: data.account.city,
     ),
+    AutarcoSensorEntityDescription(
+        key="timezone",
+        name="Timezone",
+        value_fn=lambda data: data.account.timezone,
+    ),
 )
 
 SENSORS_INVERTER: tuple[AutarcoSensorEntityDescription, ...] = (
     AutarcoSensorEntityDescription(
         key="serial_number",
         name="Serial number",
-        value_fn=lambda inverters: inverters.values(),
+        value_fn=lambda data: data.inverters.values(),
     ),
     AutarcoSensorEntityDescription(
         key="out_ac_power",
         name="AC output power",
-        value_fn=lambda inverters: inverters.values(),
+        value_fn=lambda data: data.inverters.values(),
     ),
 )
 
@@ -80,6 +82,20 @@ SENSORS_SOLAR: tuple[AutarcoSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.ENERGY,
         value_fn=lambda data: data.solar.energy_production_today,
     ),
+    AutarcoSensorEntityDescription(
+        key="energy_production_month",
+        name="Energy Production - Month",
+        native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
+        device_class=SensorDeviceClass.ENERGY,
+        value_fn=lambda data: data.solar.energy_production_month,
+    ),
+    AutarcoSensorEntityDescription(
+        key="energy_production_total",
+        name="Energy Production - Total",
+        native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
+        device_class=SensorDeviceClass.ENERGY,
+        value_fn=lambda data: data.solar.energy_production_total,
+    ),
 )
 
 
@@ -89,7 +105,7 @@ async def async_setup_entry(
     """Set up Autarco sensors based on a config entry."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     entities: list[AutarcoSensorEntity] = []
-    for index, inverter in enumerate(coordinator.data.inverters, start=1):
+    for index, inverter in enumerate(coordinator.data.inverters.values(), start=1):
         entities.extend(
             AutarcoSensorEntity(
                 coordinator=coordinator,
@@ -121,7 +137,9 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class AutarcoSensorEntity(CoordinatorEntity[AutarcoData], SensorEntity):
+class AutarcoSensorEntity(
+    CoordinatorEntity[AutarcoDataUpdateCoordinator], SensorEntity
+):
     """Defines an Autarco sensor."""
 
     coordinator: AutarcoDataUpdateCoordinator

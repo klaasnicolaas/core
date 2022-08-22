@@ -40,6 +40,7 @@ FLOWS = {
         "aurora",
         "aurora_abb_powerone",
         "aussie_broadband",
+        "autarco",
         "awair",
         "axis",
         "azure_devops",
