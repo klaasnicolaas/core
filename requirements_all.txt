@@ -360,13 +360,10 @@ atenpdu==0.3.2
 auroranoaa==0.0.2
 
 # homeassistant.components.aurora_abb_powerone
-aurorapy==0.2.6
+aurorapy==0.2.7
 
 # homeassistant.components.autarco
 autarco==0.2.0
-
-# homeassistant.components.stream
-av==8.1.0
 
 # homeassistant.components.avea
 # avea==1.5.1
