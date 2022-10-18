@@ -3,7 +3,7 @@
   "name": "CEMM",
   "config_flow": true,
   "documentation": "https://www.home-assistant.io/integrations/cemm",
-  "requirements": ["cemm==0.4.0"],
+  "requirements": ["cemm==0.5.0"],
   "codeowners": ["@klaasnicolaas"],
   "iot_class": "local_polling",
   "zeroconf": [

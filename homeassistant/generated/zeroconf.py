@@ -191,7 +191,7 @@ ZEROCONF = {
         },
         {
             "domain": "cemm",
-            "name": "cemm*"
+            "name": "cemm*",
         },
         {
             "domain": "nam",

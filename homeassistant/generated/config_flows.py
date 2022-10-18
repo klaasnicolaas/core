@@ -61,6 +61,7 @@ FLOWS = {
         "buienradar",
         "canary",
         "cast",
+        "cemm",
         "cert_expiry",
         "cloudflare",
         "co2signal",
