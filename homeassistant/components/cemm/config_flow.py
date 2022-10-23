@@ -21,33 +21,21 @@ class CEMMFlowHandler(ConfigFlow, domain=DOMAIN):
 
     def __init__(self) -> None:
         """Initialize with empty variables."""
-        self.connections: list[dict[str, int | str]] = []
+        self.connections: list[dict[str, Any]] = []
 
     async def async_step_user(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input=None, errors: dict[str, str] | None = None
     ) -> FlowResult:
         """Handle a flow initialized by the user."""
 
         errors = {}
-
         if user_input is not None:
-            session = async_get_clientsession(self.hass)
             try:
-                async with CEMM(host=user_input[CONF_HOST], session=session) as client:
-                    connection_mapping = await client.all_connections()
-                    print(connection_mapping)
+                async with CEMM(host=user_input[CONF_HOST]) as client:
+                    self.connections = await client.all_connections()
+                    return await self.async_step_connections()
             except CEMMConnectionError:
                 errors["base"] = "cannot_connect"
-            else:
-                return self.async_create_entry(
-                    title=user_input[CONF_NAME],
-                    data={
-                        CONF_HOST: user_input[CONF_HOST],
-                        CONF_CONNECTIONS: self.connections,
-                    },
-                )
-
-            return await self.async_step_select()
 
         return self.async_show_form(
             step_id="user",
@@ -62,15 +50,22 @@ class CEMMFlowHandler(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_select(self, user_input=None):
+    async def async_step_connections(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
         """Handle multiple CEMM connections."""
 
         errors = {}
-
-        select_schema = vol.Schema(
-            {vol.Required("select_connection"): vol.In(list(self.connections))}
-        )
+        print(self.connections)
+        if user_input is not None:
+            return self.async_create_entry(
+                title=user_input[CONF_NAME],
+                data={
+                    CONF_HOST: user_input[CONF_HOST],
+                    CONF_CONNECTIONS: user_input[CONF_CONNECTIONS],
+                },
+            )
 
         return self.async_show_form(
-            step_id="select", data_schema=select_schema, errors=errors
+            step_id="select", data_schema=vol.Schema({}), errors=errors
         )
