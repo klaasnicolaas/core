@@ -41,6 +41,9 @@ async def async_get_config_entry_diagnostics(
         },
         "energy": {
             "current_hour_price": coordinator.data.energy_today.current_price,
+            "next_hour_price": coordinator.data.energy_today.price_at_time(
+                coordinator.data.energy_today.utcnow() + timedelta(hours=1)
+            ),
             "average_price": coordinator.data.energy_today.average_price,
             "max_price": coordinator.data.energy_today.extreme_prices[1],
             "min_price": coordinator.data.energy_today.extreme_prices[0],
@@ -50,5 +53,6 @@ async def async_get_config_entry_diagnostics(
         },
         "gas": {
             "current_hour_price": get_gas_price(coordinator.data, 0),
+            "next_hour_price": get_gas_price(coordinator.data, 1),
         },
     }

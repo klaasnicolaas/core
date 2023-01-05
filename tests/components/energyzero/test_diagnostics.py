@@ -23,6 +23,7 @@ async def test_diagnostics(
         },
         "energy": {
             "current_hour_price": 0.49,
+            "next_hour_price": 0.55,
             "average_price": 0.37,
             "max_price": 0.55,
             "min_price": 0.26,
@@ -32,5 +33,6 @@ async def test_diagnostics(
         },
         "gas": {
             "current_hour_price": 1.47,
+            "next_hour_price": 1.47,
         },
     }
