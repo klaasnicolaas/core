@@ -1,7 +1,7 @@
 """Coordinator for the PowerFox integration."""
 from __future__ import annotations
 
-from powerfox import Powerfox
+from powerfox import Powerfox, Poweropti
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
@@ -16,8 +16,10 @@ class PowerfoxDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching Powerfox data."""
 
     config_entry: ConfigEntry
+    device_id: str
+    powerfox: Powerfox
 
-    def __init__(self, hass: HomeAssistant) -> None:
+    def __init__(self, hass: HomeAssistant, device: Poweropti, client: Powerfox) -> None:
         """Initialize the data update coordinator."""
         super().__init__(
             hass,
@@ -26,8 +28,9 @@ class PowerfoxDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=SCAN_INTERVAL,
         )
 
-        self.powerfox = Powerfox(
-            username=self.config_entry.data[CONF_USERNAME],
-            password=self.config_entry.data[CONF_PASSWORD],
-            session=async_get_clientsession(hass),
-        )
+        self.device_id = device.device_id
+        self.powerfox = client
+
+    async def _async_update_data(self) -> Poweropti:
+        """Fetch data from Powerfox."""
+        return await self.powerfox.device(device_id=self.device_id)
