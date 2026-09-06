@@ -145,7 +145,7 @@ async def test_energy_usage_today(
         state.attributes.get(ATTR_FRIENDLY_NAME) == "Energy market price"
         " - Usage Hours priced equal or lower than current - today"
     )
-    assert ATTR_DEVICE_CLASS not in state.attributes
+    assert state.attributes.get(ATTR_DEVICE_CLASS) == SensorDeviceClass.DURATION
 
 
 @pytest.mark.freeze_time("2026-04-19 13:00:00+00:00")
@@ -261,7 +261,7 @@ async def test_energy_return_today(
         state.attributes.get(ATTR_FRIENDLY_NAME) == "Energy market price"
         " - Return Hours priced equal or higher than current - today"
     )
-    assert ATTR_DEVICE_CLASS not in state.attributes
+    assert state.attributes.get(ATTR_DEVICE_CLASS) == SensorDeviceClass.DURATION
 
 
 @pytest.mark.freeze_time("2026-04-19 10:00:00+00:00")
